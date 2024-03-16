@@ -1,0 +1,33 @@
+<launch>
+    <!--arg name="gazebo_world"       default="$(find champ_gazebo)/worlds/outdoor.world" /-->
+    <arg name="world_init_x"       default="0.0" />
+    <arg name="world_init_y"       default="0.0" />
+    <arg name="world_init_z"       default="0.0" />
+    <arg name="world_init_heading" default="0.0" />
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- <arg name="world_name" value="$(find monoped)/worlds/default.world"/> -->
+        <arg name="paused" default="false"/>
+        <arg name="use_sim_time" default="true"/>
+        <arg name="gui" default="true"/>
+        <arg name="headless" default="false"/>
+        <arg name="debug" default="false"/>
+        <arg name="verbose" default="true"/>
+    </include>
+
+    <param name="robot_description" textfile="$(find test_python)/urdf/arm.urdf"/>
+
+    <!--rosparam file="$(find icheetah_config)/config/ros_control/ros_control.yaml" command="load"/-->
+
+    <node name="robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+          args="-urdf -param robot_description -model arm -x $(arg world_init_x) -y $(arg world_init_y) -z $(arg world_init_z) -Y $(arg world_init_heading)" />
+
+
+   
+    
+    
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+        <remap from="/joint_states" to="/armomnipointer/joint_states"/>
+    </node>
+
+
+</launch>

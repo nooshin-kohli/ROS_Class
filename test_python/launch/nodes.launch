@@ -1,0 +1,8 @@
+<launch>
+    <!-- Launch Node 1 -->
+    <node name="test_node" pkg="test_python" type="python_node.py" output="screen"/>
+
+    <!-- Launch Node 2 -->
+    <node name="sub_node" pkg="test_python" type="sub_node.py" output="screen"/>
+</launch>
+
